@@ -68,7 +68,8 @@ const io = socketIO(server);
 let connections = [];
 let users = {};
 
-function updateUsers(io) {
+// updateUsers gets called to convert the users object to an array of users
+function updateUsers(socket) {
   var usersArray = [];
   for (var userId in users) {
     usersArray.push(users[userId]);
@@ -106,7 +107,7 @@ io.on("connection", socket => {
       `Connection disconnected: ${connections.length} active connections.`
     );
 
-    updateUsers(io);
+    updateUsers(socket);
   });
 
   // ready will be called by clients when they can accept a new challenge--the data coming in is the user object
@@ -114,7 +115,7 @@ io.on("connection", socket => {
     user.socketId = socket.id;
     users[user._id] = user;
 
-    updateUsers(io);
+    updateUsers(socket);
   });
 
   // challenge is called when User A clicks "Fight" on User B's fighter card. User B can then accept the challenge and they will be taken to /fight/:fightID
