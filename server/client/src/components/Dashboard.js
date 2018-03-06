@@ -1,17 +1,18 @@
 import React from "react";
 import FighterCards from "./FighterCards";
 import { Link } from "react-router-dom";
-
-import { SocketProvider } from "socket.io-react";
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:5000");
+import { connect } from "react-redux";
+import { socketConnect } from 'socket.io-react';
 
 // Anytime we're using state we're using data that is going to change
 // Props are properties and/or values that come from somewhere else
-const Dashboard = () => {
+const Dashboard = (props) => {
+  
+  if (props.auth) {
+    props.socket.emit("ready", props.auth);
+  }
+
   return (
-    <SocketProvider socket={socket}>
       <div className="container" style={{ textAlign: "center" }}>
         <br />
         <br />
@@ -28,8 +29,12 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-    </SocketProvider>
   );
 };
 
-export default Dashboard;
+
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps)(socketConnect(Dashboard));

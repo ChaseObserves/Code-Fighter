@@ -66,53 +66,99 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 let connections = [];
-let users = [];
+let users = {};
 
-// const getCurrentUserAndEmit = async socket => {
-//   try {
-//     const res = await axios.get("/api/current_user");
-//     socket.emit("FromDB", res.data.id);
-//   } catch (error) {
-//     console.error("Error: ${error.code");
-//   }
-// };
+function updateUsers(io) {
+  var usersArray = [];
+  for (var userId in users) {
+    usersArray.push(users[userId]);
+  }
+
+  io.sockets.emit("update users", usersArray);
+  socket.emit("update users", usersArray);
+}
 
 io.on("connection", socket => {
+  // keep track of new connections 
   connections.push(socket);
   console.log(
     `${socket.id} connected: ${connections.length} active connections.`
   );
-  // getCurrentUserAndEmit(socket);
+
+  // send a debug log to clients to let them know a new connection happened
+  io.sockets.emit("message", `a new connection happened ${socket.id}`);
+
+  // debug event for logging messages sent from clients
+  socket.on("message", function(data){
+    console.log("message", data);
+  });
+
+  // on disconnects we need to remove the user that disconnected from our users array
   socket.on("disconnect", function(data) {
     connections.splice(connections.indexOf(socket), 1);
-    for (var i = 0; i < users.length; i++) {
-      if (users[i].id == socket.id) {
-        users.splice(i, 1);
+    for (var userId in users) {
+      if (users[userId].socketId == socket.id) {
+        delete(users[userId]);
         break;
       }
     }
     console.log(
       `Connection disconnected: ${connections.length} active connections.`
     );
-    io.sockets.emit("update users", { users: users });
-    if (!connections.length) {
-      messages = [];
-    }
+
+    updateUsers(io);
   });
 
-  socket.on("login", function(data) {
-    users.push({
-      name: data,
-      id: socket.id
-    });
-    socket.emit("logged in", {
-      loggedIn: true,
-      currentUser: data,
-      history: messages
-    });
-    io.sockets.emit("update users", { users: users });
-    socket.emit("update users", { users: users });
+  // ready will be called by clients when they can accept a new challenge--the data coming in is the user object
+  socket.on("ready", function(user) {
+    user.socketId = socket.id;
+    users[user._id] = user;
+
+    updateUsers(io);
   });
+
+  // challenge is called when User A clicks "Fight" on User B's fighter card. User B can then accept the challenge and they will be taken to /fight/:fightID
+  socket.on("challenge", function(challengeDetails) {
+    // get the challenger ID and challenged ID so we can send the event to the challenged user
+    var challenger = challengeDetails.challenger._id;
+    var challenged = users[challengeDetails.challenged];
+
+    // if we couldn't find the challenger or the challenged in our users object then we have a problem
+    if (!challenger || !challenged) {
+      console.log("problem with challenger or challenged");
+      return
+    }
+
+    console.log(`${challenger} vs ${challenged._id}`);
+
+    // let the challenged user know they need to accept this challenge
+    socket.broadcast.to(challenged.socketId).emit("challenge", data);
+  });
+
+  // accept challenge will be called after a challenge has been sent to a user and the challenged user has accepted it. 
+  // We will send a websocket event to both clients with the ID for a fight and the client will jump to /fight/:fightID
+  socket.on("accept challenge", function(data) {
+    var fightId = "12345";
+    var otherUser = users[data.challenger];
+
+    if (!otherUser) {
+      console.log("problem finding original challenger user");
+      return
+    }
+
+    // useful info about rooms if you want to add some real time stuff to the fight later.
+    // https://stackoverflow.com/questions/35680565/sending-message-to-specific-client-in-socket-io/35681189
+
+    // for now, just create a `fight` record in the db and return the _id to both clients.
+
+    // you're client code will be need to be listening for a "start fight" event--when it happens, go to /fight/:fightId
+
+    // send the fightId to both users on the "start fight" event
+    socket.broadcast.to(otherUser.socketId).emit("start fight", fightId);
+    socket.emit("start fight", fightId);
+
+  });
+
 });
 
 server.listen(PORT, function() {

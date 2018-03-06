@@ -1,6 +1,6 @@
 import "materialize-css/dist/css/materialize.min.css";
-// No "./" relative path for the css file because when you leave that off of an import statement, webpack automatically
 // assumes you're referring to a node module, which we are. Also no need for a variable name because we don't "call" the
+// No "./" relative path for the css file because when you leave that off of an import statement, webpack automatically
 // css file like we would some of these js functions or components. We just reference the file in our styling with classes.
 import React from "react";
 import ReactDOM from "react-dom";
@@ -8,8 +8,14 @@ import { Provider } from "react-redux"; // This Provider tag allows deeply neste
 import { createStore, applyMiddleware } from "redux"; // These are helpers from Redux
 import reduxThunk from "redux-thunk";
 
+import { SocketProvider } from "socket.io-react";
+import io from "socket.io-client";
+
 import App from "./components/App";
 import reducers from "./reducers";
+
+const socket = io.connect("http://localhost:5000");
+socket.on("message", (msg) => console.log(msg));
 
 // This creates a Redux store at the very top level of our application. This stores all state in the app.
 // The arguments to createStore are all the reducers we have in our app
@@ -17,7 +23,9 @@ const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <SocketProvider socket={socket}>
+      <App />
+    </SocketProvider>
   </Provider>,
   document.querySelector("#root")
 );
