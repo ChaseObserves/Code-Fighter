@@ -1,5 +1,5 @@
 import axios from "axios"; // used to make AJX requests
-import { FETCH_USER, FETCH_FIGHTERS } from "./types"; // In small applications, it's okay to define the action type inline. But for larger apps, best practice is to define them in a separate file as done here.
+import { FETCH_USER, FETCH_FIGHTERS, INCOMING_CHALLENGE } from "./types"; // In small applications, it's okay to define the action type inline. But for larger apps, best practice is to define them in a separate file as done here.
 
 // ---------------- These are Action Creators ----------------
 // Action Creators are functions called by React Components and they create/return Actions which are the ONLY source of info for the Redux store.
@@ -32,10 +32,23 @@ export const fetchUser = () => async dispatch => {
 //     };
 // };
 
-export const fetchFighters = () => async dispatch => {
-  const res = await axios.get("/api/all_users");
+// fetchFighters listens for the "update users" event that gets called when other users are "ready" for a challenge
+export const fetchFighters = (socket) => async dispatch => {
+  // const res = await axios.get("/api/all_users");
 
-  dispatch({ type: FETCH_FIGHTERS, payload: res.data });
+    socket.on("update users", (data) => {
+      dispatch({ type: FETCH_FIGHTERS, payload: data });
+    });
+
+};
+
+// incomingChallenge gets a challenge from the websocket if another user sends us one
+export const incomingChallenge = (socket) => async dispatch => {
+  socket.on("challenge", (data) => {
+    console.log("incoming challenge", data);
+    dispatch({type: INCOMING_CHALLENGE, payload: data});
+  })
+
 };
 
 //////////////////////////////////////////////////////////////////
