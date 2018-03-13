@@ -9,45 +9,24 @@ class Lobby extends Component {
           <div className="col m8">
             <h5>Situation</h5>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-              mollis libero est, ut commodo velit tempor id. Fusce et congue
-              eros. Suspendisse aliquam odio non vulputate efficitur.
-              Suspendisse non libero laoreet, tempor mi non, pellentesque metus.
-              Sed ac porta nisi. Aliquam commodo fringilla eros, ac mollis metus
-              commodo quis. Aliquam erat volutpat. Vivamus vulputate viverra
-              mauris non aliquet. Integer eu nibh justo. Donec blandit diam quis
-              mauris condimentum, vitae sollicitudin quam varius. Sed ut
-              hendrerit dolor. Curabitur molestie odio velit, eget suscipit mi
-              volutpat in. Praesent sit amet augue justo. Curabitur rhoncus
-              venenatis lorem vitae molestie.
+              Given two arrays of strings, return the number of times each
+              string of the second array appears in the first array.
             </p>
             <ReactAce />
           </div>
           <div className="col m4">
             <h5>Example</h5>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-              mollis libero est, ut commodo velit tempor id. Fusce et congue
-              eros. Suspendisse aliquam odio non vulputate efficitur.
-              Suspendisse non libero laoreet, tempor mi non, pellentesque metus.
-              Sed ac porta nisi. Aliquam commodo fringilla eros, ac mollis metus
-              commodo quis. Aliquam erat volutpat. Vivamus vulputate viverra
-              mauris non aliquet. Integer eu nibh justo. Donec blandit diam quis
-              mauris condimentum, vitae sollicitudin quam varius. Sed ut
-              hendrerit dolor. Curabitur molestie odio velit, eget suscipit mi
-              volutpat in. Praesent sit amet augue justo. Curabitur rhoncus
-              venenatis lorem vitae molestie. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Mauris mollis libero est, ut commodo
-              velit tempor id. Fusce et congue eros. Suspendisse aliquam odio
-              non vulputate efficitur. Suspendisse non libero laoreet, tempor mi
-              non, pellentesque metus. Sed ac porta nisi. Aliquam commodo
-              fringilla eros, ac mollis metus commodo quis. Aliquam erat
-              volutpat. Vivamus vulputate viverra mauris non aliquet. Integer eu
-              nibh justo. Donec blandit diam quis mauris condimentum, vitae
-              sollicitudin quam varius. Sed ut hendrerit dolor. Curabitur
-              molestie odio velit, eget suscipit mi volutpat in. Praesent sit
-              amet augue justo. Curabitur rhoncus venenatis lorem vitae
-              molestie.
+              array1 = ['abc', 'abc', 'xyz', 'cde', 'uvw']<br />
+              array2 = ['abc', 'cde', 'uap']<br />
+              How many times do the elements in array2 appear in array1?<br />
+              <br />
+              'abc' appears twice in the first array (2)<br />
+              'cde' appears only once (1)<br />
+              'uap' does not appear in the first array (0)<br />
+              Therefore, solve(array1, array2) = [2, 1, 0]<br />
+              <br />
+              FIGHT!
             </p>
           </div>
         </div>

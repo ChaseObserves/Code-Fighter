@@ -80,7 +80,7 @@ function updateUsers(socket) {
 }
 
 io.on("connection", socket => {
-  // keep track of new connections 
+  // keep track of new connections
   connections.push(socket);
   console.log(
     `${socket.id} connected: ${connections.length} active connections.`
@@ -90,7 +90,7 @@ io.on("connection", socket => {
   io.sockets.emit("message", `a new connection happened ${socket.id}`);
 
   // debug event for logging messages sent from clients
-  socket.on("message", function(data){
+  socket.on("message", function(data) {
     console.log("message", data);
   });
 
@@ -99,7 +99,7 @@ io.on("connection", socket => {
     connections.splice(connections.indexOf(socket), 1);
     for (var userId in users) {
       if (users[userId].socketId == socket.id) {
-        delete(users[userId]);
+        delete users[userId];
         break;
       }
     }
@@ -127,16 +127,18 @@ io.on("connection", socket => {
     // if we couldn't find the challenger or the challenged in our users object then we have a problem
     if (!challenger || !challenged) {
       console.log("problem with challenger or challenged");
-      return
+      return;
     }
 
     console.log(`${challenger} vs ${challenged._id}`);
 
     // let the challenged user know they need to accept this challenge
-    socket.broadcast.to(challenged.socketId).emit("challenge", data);
+    socket.broadcast
+      .to(challenged.socketId)
+      .emit("challenge", challengeDetails);
   });
 
-  // accept challenge will be called after a challenge has been sent to a user and the challenged user has accepted it. 
+  // accept challenge will be called after a challenge has been sent to a user and the challenged user has accepted it.
   // We will send a websocket event to both clients with the ID for a fight and the client will jump to /fight/:fightID
   socket.on("accept challenge", function(data) {
     var fightId = "12345";
@@ -144,7 +146,7 @@ io.on("connection", socket => {
 
     if (!otherUser) {
       console.log("problem finding original challenger user");
-      return
+      return;
     }
 
     // useful info about rooms if you want to add some real time stuff to the fight later.
@@ -157,9 +159,7 @@ io.on("connection", socket => {
     // send the fightId to both users on the "start fight" event
     socket.broadcast.to(otherUser.socketId).emit("start fight", fightId);
     socket.emit("start fight", fightId);
-
   });
-
 });
 
 server.listen(PORT, function() {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import CFlogo from "../images/CFlogo.png";
 
 class Header extends Component {
   renderContent() {
@@ -10,13 +11,17 @@ class Header extends Component {
       case false:
         return (
           <li>
-            <a href="/auth/google">Login with Google</a>
+            <a href="/auth/google" style={{ fontFamily: "Bangers" }}>
+              Login with Google
+            </a>
           </li>
         );
       default:
         return [
           <li key="Logout">
-            <a href="/api/logout">Logout</a>
+            <a href="/api/logout" style={{ fontFamily: "Bangers" }}>
+              Logout
+            </a>
           </li>
         ];
     }
@@ -31,7 +36,11 @@ class Header extends Component {
             className="left brand-logo"
             style={{ paddingLeft: 20 }}
           >
-            Code Fighter
+            <img
+              src={CFlogo}
+              style={{ width: "10%", height: "auto", paddingTop: "10px" }}
+              alt="Code Fighter Logo"
+            />
           </Link>
           <ul className="right">{this.renderContent()} </ul>
         </div>

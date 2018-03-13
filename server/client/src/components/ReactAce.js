@@ -25,11 +25,18 @@ class ReactAce extends Component {
             showPrintMargin={true}
             showGutter={true}
             highlightActiveLine={true}
-            value={`function testFunction(argument) {
+            value={`function solve(a,b) {
 
 }
 
-return testFunction`}
+return solve
+
+
+describe("Basic tests", function(){
+Test.assertDeepEquals(solve(['abc', 'abc','xyz','abcd','cde'], ['abc', 'cde', 'uap']), [2, 1, 0]);
+Test.assertDeepEquals(solve(['abc', 'xyz','abc', 'xyz','cde'], ['abc', 'cde', 'xyz']), [2, 1, 2]);
+Test.assertDeepEquals(solve(['quick', 'brown', 'fox', 'is', 'quick'], ['quick', 'abc', 'fox']), [2, 0, 1]);
+});`}
             setOptions={{
               enableBasicAutocompletion: false,
               enableLiveAutocompletion: false,

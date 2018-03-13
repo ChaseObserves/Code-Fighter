@@ -1,6 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import StreetFighter from "../images/StreetFighterBG.mp4";
+import CFlogo from "../images/CFlogo.png";
 // import { Link } from "react-router-dom";
+
+const bgVideo = {
+  width: "100%",
+  height: "auto",
+  float: "left",
+  top: "0",
+  left: "0",
+  padding: "none",
+  position: "fixed",
+  zIndex: "-1"
+};
 
 class Landing extends Component {
   renderContent() {
@@ -11,14 +24,14 @@ class Landing extends Component {
         console.log("This is the false case", this.props.auth);
         return (
           <a href="/auth/google">
-            <button className="btn brown lighten-3">Login with Google</button>
+            <button className="btn-grad btn-grad-1">Login with Google</button>
           </a>
         );
       default:
         console.log("This is the default:", this.props.auth);
         return [
           <a href="/surveys" key="Lobby">
-            <button className="btn brown lighten-3">Lobby</button>
+            <button className="btn-grad btn-grad-1">Lobby</button>
           </a>
         ];
     }
@@ -28,13 +41,23 @@ class Landing extends Component {
 
   render() {
     return (
-      <div style={{ textAlign: "center" }}>
-        <h1>Code Fighter</h1>
-        Compete head-to-head in coding challenges
-        <br />
-        <div>
-          {this.renderContent()}
-          {/* this line calls the helper method, which will loop through the switch statement, determine which case is true, then display the true result */}
+      <div>
+        <video style={bgVideo} loop autoPlay muted>
+          <source src={this.props.videoURL} type="video/mp4" />
+          <source src={this.props.videoURL} type="video/ogg" />
+          Your browser does not support the video tag.
+        </video>
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={CFlogo}
+            style={{ width: "50%", height: "auto", paddingTop: "50px" }}
+            alt="Code Fighter Logo"
+          />
+          <br />
+          <div>
+            {this.renderContent()}
+            {/* this line calls the helper method, which will loop through the switch statement, determine which case is true, then display the true result */}
+          </div>
         </div>
       </div>
     );
@@ -42,7 +65,10 @@ class Landing extends Component {
 }
 
 function mapStateToProps({ auth }) {
-  return { auth };
+  return {
+    auth,
+    videoURL: StreetFighter
+  };
 }
 
 export default connect(mapStateToProps)(Landing);

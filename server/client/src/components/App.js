@@ -28,11 +28,8 @@ class App extends Component {
               <Route exact path="/" component={Landing} />{" "}
               {/* "path" and "component" here are props, path is the route and component is the component we want to display when a user hits that route. */}
               <Route exact path="/surveys" component={Dashboard} />
-              <Route path="/lobby" component={Lobby} />
+              <Route path="/fights/:fightId" component={Lobby} />
             </div>
-            {/* The first two components need "exact path" because the characters in their routes are also contained in this last route.
-                        If "exact" wasn't there, React Router would display all 3 components on the screen once this route was hit. This last component
-                        doesn't need "exact" because those other component paths don't contain all of the characters found in this route. */}
           </div>
         </BrowserRouter>
       </div>
