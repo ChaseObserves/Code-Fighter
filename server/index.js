@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 const socketIO = require("socket.io");
 require("./models/User"); // This require statement MUST be above the one below. This defines the user model.
+require("./models/Fight");
 require("./services/passport"); // and this makes use of the user model. You have to define it before you can use it.
 
 mongoose.connect(keys.mongoURI);
@@ -41,6 +42,7 @@ app.use(passport.session());
 // that's being passed into that function.
 require("./routes/authRoutes")(app);
 require("./routes/fighterRoutes")(app);
+require("./routes/fightLobbyRoutes")(app);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
