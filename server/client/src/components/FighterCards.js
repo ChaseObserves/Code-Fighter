@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { socketConnect } from "socket.io-react";
-import { fetchFighters, incomingChallenge } from "../actions";
+import { fetchFighters, incomingChallenge, startFight } from "../actions";
 import FightButton from "../images/FightButton.png";
+import { Redirect } from 'react-router-dom'
 
 class FighterCards extends Component {
   state = {
@@ -15,6 +16,7 @@ class FighterCards extends Component {
     // when the component mounts, listen for changes to fighters and for incoming challenges using the socket.
     this.props.fetchFighters(this.props.socket);
     this.props.incomingChallenge(this.props.socket);
+    this.props.startFight(this.props.socket);
   }
 
   // challenge is called when we want to challenge another user
@@ -35,8 +37,10 @@ class FighterCards extends Component {
     console.log("Name: ", name);
   }
 
-  openModal2() {
-    this.setState({ openModal2: true });
+  acceptChallenge(challengerId) {
+    this.props.socket.emit("accept challenge", {
+      challenger: challengerId
+    });
   }
 
   renderFighters() {
@@ -76,6 +80,7 @@ class FighterCards extends Component {
     const hasBeenChallenged = this.props.challenge;
     return (
       <div>
+        {this.props.acceptedFight ? <Redirect to={"/fights/"+this.props.acceptedFight} /> : null}
         {/* // TODO: Figure out how to display an incoming challenge nicely */}
         Challenge: {JSON.stringify(this.props.challenge)}
         {this.props.fighters.length > 1 ? (
@@ -137,6 +142,7 @@ class FighterCards extends Component {
             <a
               href="#!"
               className="modal-action modal-close waves-effect waves-green btn-flat"
+              onClick={() => this.acceptChallenge(this.props.challenge.challenger._id)}
             >
               Let's Fight!
             </a>
@@ -147,10 +153,10 @@ class FighterCards extends Component {
   }
 }
 
-function mapStateToProps({ fighters, auth, challenge }) {
-  return { fighters, auth, challenge };
+function mapStateToProps({ fighters, auth, challenge, acceptedFight }) {
+  return { fighters, auth, challenge, acceptedFight };
 }
 
-export default connect(mapStateToProps, { fetchFighters, incomingChallenge })(
+export default connect(mapStateToProps, { fetchFighters, incomingChallenge, startFight })(
   socketConnect(FighterCards)
 );

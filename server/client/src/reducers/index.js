@@ -2,12 +2,15 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import fightersReducer from "./fightersReducer";
 import challengeReducer from "./challengeReducer";
+import startFightReducer from "./startFightReducer";
 import endFightReducer from "./endFightReducer";
+
 
 export default combineReducers({
   auth: authReducer,
   fighters: fightersReducer,
   challenge: challengeReducer,
+  acceptedFight: startFightReducer,
   completedFight: endFightReducer
 });
 

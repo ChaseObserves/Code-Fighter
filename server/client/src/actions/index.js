@@ -3,6 +3,8 @@ import {
   FETCH_USER,
   FETCH_FIGHTERS,
   INCOMING_CHALLENGE,
+  CREATE_LOBBY,
+  START_FIGHT,
   END_FIGHT
 } from "./types"; // In small applications, it's okay to define the action type inline. But for larger apps, best practice is to define them in a separate file as done here.
 
@@ -30,6 +32,16 @@ export const endFight = fightId => async dispatch => {
   console.log("ending fight", fightId);
   const res = await axios.post("/api/fights/" + fightId, fightId);
   dispatch({ type: END_FIGHT, payload: res.data });
+};
+
+// startFight gets called when a challenge has been issued and accepted
+export const startFight = socket => async dispatch => {
+  socket.on("start fight", data => {
+    console.log("start fight", data);
+    dispatch({type: START_FIGHT, payload: data});
+  });
+
+
 };
 
 //////////////////////////////////////////////////////////////////
