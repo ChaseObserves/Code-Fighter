@@ -141,13 +141,14 @@ io.on("connection", socket => {
   // accept challenge will be called after a challenge has been sent to a user and the challenged user has accepted it.
   // We will send a websocket event to both clients with the ID for a fight and the client will jump to /fight/:fightID
   socket.on("accept challenge", function(data) {
-    var fightId = "12345";
     var otherUser = users[data.challenger];
 
     if (!otherUser) {
       console.log("problem finding original challenger user");
       return;
     }
+
+    var fightId = makeid();
 
     // useful info about rooms if you want to add some real time stuff to the fight later.
     // https://stackoverflow.com/questions/35680565/sending-message-to-specific-client-in-socket-io/35681189
@@ -157,6 +158,9 @@ io.on("connection", socket => {
     // you're client code will be need to be listening for a "start fight" event--when it happens, go to /fight/:fightId
 
     // send the fightId to both users on the "start fight" event
+
+    console.log("starting fight", fightId);
+
     socket.broadcast.to(otherUser.socketId).emit("start fight", fightId);
     socket.emit("start fight", fightId);
   });
@@ -165,3 +169,14 @@ io.on("connection", socket => {
 server.listen(PORT, function() {
   console.log("App listening on port " + PORT);
 });
+
+
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 9; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
