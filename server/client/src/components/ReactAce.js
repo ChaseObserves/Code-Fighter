@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import brace from "brace";
 import AceEditor from "react-ace";
+import { connect } from "react-redux";
+import { endFight } from "../actions";
 
 import "brace/mode/javascript";
 import "brace/theme/monokai";
@@ -10,6 +12,10 @@ class ReactAce extends Component {
   onChange(newValue) {
     console.log("change", newValue);
   }
+
+  submit = fightId => {
+    this.props.endFight(fightId);
+  };
 
   render() {
     return (
@@ -58,6 +64,7 @@ Test.assertDeepEquals(solve(['quick', 'brown', 'fox', 'is', 'quick'], ['quick', 
                 type="submit"
                 className="grey btn right white-text"
                 style={{ marginLeft: 20 }}
+                onClick={() => this.submit(this.props.fightId)}
               >
                 Submit
               </button>
@@ -74,4 +81,10 @@ Test.assertDeepEquals(solve(['quick', 'brown', 'fox', 'is', 'quick'], ['quick', 
   }
 }
 
-export default ReactAce;
+// export default ReactAce;
+
+function mapStateToProps({ completedFight }) {
+  return { completedFight };
+}
+
+export default connect(mapStateToProps, { endFight })(ReactAce);

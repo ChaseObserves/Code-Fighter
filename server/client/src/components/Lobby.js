@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import ReactAce from "./ReactAce";
 
 class Lobby extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   render() {
     return (
       <div>
@@ -12,7 +16,7 @@ class Lobby extends Component {
               Given two arrays of strings, return the number of times each
               string of the second array appears in the first array.
             </p>
-            <ReactAce />
+            <ReactAce fightId={this.props.match.params.fightId} />
           </div>
           <div className="col m4">
             <h5>Example</h5>
