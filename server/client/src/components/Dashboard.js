@@ -39,11 +39,6 @@ const Dashboard = props => {
             <FighterCards />
           </div>
         </div>
-        <div className="fixed-action-btn">
-          <Link to="/fights/:fightId" className="btn-floating btn-large red">
-            <i className="large material-icons">add</i>
-          </Link>
-        </div>
       </div>
     </div>
   );

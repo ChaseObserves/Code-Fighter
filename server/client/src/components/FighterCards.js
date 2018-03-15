@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { socketConnect } from "socket.io-react";
 import { fetchFighters, incomingChallenge, startFight } from "../actions";
 import FightButton from "../images/FightButton.png";
-import { Redirect } from 'react-router-dom'
+import { Redirect } from "react-router-dom";
 
 class FighterCards extends Component {
   state = {
@@ -80,9 +80,9 @@ class FighterCards extends Component {
     const hasBeenChallenged = this.props.challenge;
     return (
       <div>
-        {this.props.acceptedFight ? <Redirect to={"/fights/"+this.props.acceptedFight} /> : null}
-        {/* // TODO: Figure out how to display an incoming challenge nicely */}
-        Challenge: {JSON.stringify(this.props.challenge)}
+        {this.props.acceptedFight ? (
+          <Redirect to={"/fights/" + this.props.acceptedFight} />
+        ) : null}
         {this.props.fighters.length > 1 ? (
           this.renderFighters()
         ) : (
@@ -142,7 +142,8 @@ class FighterCards extends Component {
             <a
               href="#!"
               className="modal-action modal-close waves-effect waves-green btn-flat"
-              onClick={() => this.acceptChallenge(this.props.challenge.challenger._id)}
+              onClick={() =>
+                this.acceptChallenge(this.props.challenge.challenger._id)}
             >
               Let's Fight!
             </a>
@@ -157,6 +158,8 @@ function mapStateToProps({ fighters, auth, challenge, acceptedFight }) {
   return { fighters, auth, challenge, acceptedFight };
 }
 
-export default connect(mapStateToProps, { fetchFighters, incomingChallenge, startFight })(
-  socketConnect(FighterCards)
-);
+export default connect(mapStateToProps, {
+  fetchFighters,
+  incomingChallenge,
+  startFight
+})(socketConnect(FighterCards));

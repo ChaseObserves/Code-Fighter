@@ -8,6 +8,8 @@ import Header from "./Header";
 import Landing from "./Landing";
 import Dashboard from "./Dashboard";
 import Lobby from "./Lobby";
+import Won from "./Won";
+import Lost from "./Lost";
 
 // In the first build of this App Component, it was a functional Component. But we only want to run our fetchUser Action Creator the very first time App is rendered to the screen,
 // so we will refactor it to be a class-based component rather than a functional one. Doing so gives us access to a life-cycle method (componentDidMount) that will automatically
@@ -27,8 +29,10 @@ class App extends Component {
             <div className="container">
               <Route exact path="/" component={Landing} />{" "}
               {/* "path" and "component" here are props, path is the route and component is the component we want to display when a user hits that route. */}
-              <Route exact path="/surveys" component={Dashboard} />
+              <Route exact path="/dashboard" component={Dashboard} />
               <Route path="/fights/:fightId" component={Lobby} />
+              <Route path="/won" component={Won} />
+              <Route path="/lost" component={Lost} />
             </div>
           </div>
         </BrowserRouter>

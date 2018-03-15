@@ -30,7 +30,7 @@ class Landing extends Component {
       default:
         console.log("This is the default:", this.props.auth);
         return [
-          <a href="/surveys" key="Lobby">
+          <a href="/dashboard" key="Lobby">
             <button className="btn-grad btn-grad-1">Lobby</button>
           </a>
         ];
