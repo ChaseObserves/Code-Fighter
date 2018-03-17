@@ -15,7 +15,7 @@ import io from "socket.io-client";
 import App from "./components/App";
 import reducers from "./reducers";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://shrouded-basin-23293.herokuapp.com/"); // Change this to http://localhost:5000 to run it in a dev environment
 socket.on("message", msg => console.log(msg));
 
 // This creates a Redux store at the very top level of our application. This stores all state in the app.

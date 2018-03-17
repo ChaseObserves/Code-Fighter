@@ -144,11 +144,15 @@ class ReactAce extends Component {
         <div>
           <ul>
             <li>
-              <button type="submit" className="red btn left white-text">
+              <Link
+                to="/lost"
+                type="submit"
+                className="red btn left white-text"
+              >
                 Give Up
-              </button>
+              </Link>
             </li>
-            <li>{this.renderSubmitButton()};</li>
+            <li>{this.renderSubmitButton()}</li>
             <li>
               <button
                 type="submit"
